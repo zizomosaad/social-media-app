@@ -35,7 +35,6 @@ services:
       POSTGRES_PORT: "5432"
     ports:
       - "${BACKEND_PORT:-8000}:8000"
-    command: python src/manage.py runserver 0.0.0.0:8000
 
     depends_on:
       database:
@@ -49,7 +48,6 @@ services:
     restart: unless-stopped
     environment:
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000/api}
-    command: npm run dev -- --hostname 0.0.0.0
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     depends_on:

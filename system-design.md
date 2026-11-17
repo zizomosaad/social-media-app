@@ -64,7 +64,7 @@ deletion: delete only the like
 erDiagram
     Users ||--o{ Posts : creates
     Users ||--o{ Comments : creates
-    Posts ||--o{ Comments; creates
+    Posts ||--o{ Comments; has
     Users ||--o{ LIKE : creates
     Users {
         string email
@@ -131,6 +131,7 @@ Like
 id
 user_id
 post_id
+created_at
 
 UNIQUE(user_id, post_id)
 ...
