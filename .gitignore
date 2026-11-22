@@ -39,3 +39,14 @@
 # frontend typescript
 /frontend/**/*.tsbuildinfo
 /frontend/**/next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+
+# User uploads
+media/

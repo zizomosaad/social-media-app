@@ -36,7 +36,7 @@ Models:
 
 Entity: Users
 Purpose: login and store user info, inherite from django abstract user model
-Important Fields: email , username, password, fullname, profile-picture
+Important Fields: email , username, password, date_joined, profile-picture
 Relations: a user can add posts, comments, likes
 Deletion: cascade deleting post , like or comment , also find the image of the user and and images associated with the user posts and delete them from the storage if they exist
 
@@ -52,7 +52,7 @@ Purpose: what other people thought about the post, MVP comments are only direct 
 Nested comment replies are postponed.
 Important Fields: user, text or image
 Relations: user , post
-deletion: delete only the comment
+deletion: delete only the comment and any image associated with the comment if it exists in the storage
 
 Entity: Likes
 Purpose: users can like or remove a like of there own on any post
@@ -64,14 +64,15 @@ deletion: delete only the like
 erDiagram
     Users ||--o{ Posts : creates
     Users ||--o{ Comments : creates
-    Posts ||--o{ Comments; has
+    Posts ||--o{ Comments : has
+    Posts ||--o{ LIKE : has
     Users ||--o{ LIKE : creates
     Users {
         string email
         string username
         string password
-        string fullname
         url profile-picture
+        datetime date_joined
     }
     Posts {
         forginkey Users
@@ -96,14 +97,13 @@ Database design
 Users
 -------
 id
-fullname
 email unique
 username unique
 password (hashed) 
 profile_picture
 date_of_birth
 phone_number
-created_at
+date_joined
 ...
 
 Posts
@@ -218,7 +218,7 @@ Likes and comments
 
 
 `GET /api/posts/{id}/comments` (authenticated, returns all comments for a post ordered by created_at ascending)
-- Headers: `Accept: application/json`, `Cookie: sessionid=...`, `Content-Type: application/json`
+- Headers: `Accept: application/json`, `Cookie: sessionid=...`
 - Query: optional `limit` (default 20, maximum 100) and `offset` (default 0).
 - Request body: none.
 - Response: `200 OK`; body `{ "results": [<comment>], "limit": 20, "offset": 0, "total": 5 }`. A comment is `{ "id": 15, "post_id": 7, "author": { "id": 42, "username": "jane", "fullname": "Jane Doe", "profile_picture": null }, "created_at": "2026-10-05T12:05:00Z", "text": "Nice post", "image": null }`.

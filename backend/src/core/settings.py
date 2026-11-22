@@ -16,7 +16,7 @@ import os
 
 
 env = environ.Env()
-env.read_env(os.path.join(os.path.dirname(__file__), ".env"))
+env.read_env(os.path.join(os.path.dirname(__file__), "../../.env"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,6 +89,8 @@ DATABASES = {
         "NAME": env("POSTGRES_DB"),
         "USER": env("POSTGRES_USER"),
         "PASSWORD": env("POSTGRES_PASSWORD"),
+        "PORT": env("POSTGRES_PORT"),
+        "HOST": env("POSTGRES_HOST"),
     }
 }
 
@@ -138,5 +140,12 @@ AUTH_USER_MODEL = "accounts.User"
 
 
 CORS_ALLOWED_ORIGINS = env(
-    "CORS_ALLOWED_ORIGINS", "http://localhost:3000"
+    "DJANGO_CORS_ALLOWED_ORIGINS", "http://localhost:3000"
+).split(",")
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CSRF_TRUSTED_ORIGINS = env(
+    "DJANGO_CSRF_TRUSTED_ORIGINS", "http://localhost:3000"
 ).split(",")
